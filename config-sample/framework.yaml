@@ -1,0 +1,180 @@
+server:
+  port: 8080
+
+logging:
+  config: classpath:logback-common.xml
+
+spring:
+  application:
+    name: boot
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 40MB
+
+  thymeleaf:
+    suffix: .html
+    prefix: classpath:/templates
+
+  freemarker:
+    cache: false
+    charset: UTF-8
+    content-type: text/html
+    enabled: true
+    request-context-attribute: req
+    settings:
+      classic_compatible: true
+      number_format: 0.##
+    suffix: .html
+    template-loader-path: classpath:/templates/
+
+  datasource:
+    druid:
+      initialSize: 5
+      minIdle: 10
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      maxEvictableIdleTimeMillis: 900000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      aop-patterns: "com.jerry.up.lala..*.service.*,com.jerry.up.lala..*.mapper.*"
+      useGlobalDataSourceStat: true
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+      stat-view-servlet:
+        enabled: true
+        allow:
+        url-pattern: /druid/*
+        login-username: druid
+        login-password: 123456
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+
+    dynamic:
+      primary: master
+      lazy: true
+      datasource:
+        master:
+          lazy: true
+          driverClassName: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://192.168.35.61:3306/lala_boot?autoReconnect=true&useAffectedRows=true&useSSL=false&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2b8&allowMultiQueries=true
+          username: root
+          password: 123456
+
+  redis:
+    host: 192.168.35.61:6379
+    password: 123456
+    timeout: 300s
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1s
+        min-idle: 0
+  
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.35.61:8848
+        group: LALA_BOOT_GROUP
+        prefix: boot
+        file-extension: yaml
+        extension-configs:
+          - data-id: env.192.168.35.61.yaml
+            group: LALA_BOOT_GROUP
+            refresh: true
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+
+rocketmq:
+  name-server: 192.168.35.61:9876
+  producer:
+    group: lala_boot_producer
+
+sa-token:
+  tokenName: Authorization
+  timeout: -1
+  activityTimeout: 2592000
+  isConcurrent: true
+  isShare: false
+  maxLoginCount: -1
+  tokenPrefix: Bearer
+  isPrint: false
+  isLog: false
+  jwtSecretKey: wjmrdmkdenyxsnwyfoptigcercnbjyl
+
+  alone-redis:
+    host: 192.168.35.61
+    port: 6379
+    password: 123456
+    database: 1
+    timeout: 60s
+
+common:
+  dataPath: /Users/jerry/root/root/data/lala
+
+  access: true
+
+  open-urls:
+    - /favicon.ico
+    - /registry/machine
+    - /**/open/**
+    - /**/druid/**
+    - /**/actuator/**
+    - /**/error/**
+
+  log:
+    mq: true
+    print: true
+
+  mail:
+    host: smtp.sohu.com
+    port: 465
+    from: jerry_lala@sohu.com
+    user: jerry_lala
+    pass: 2AZELQBOH7J0
+    subject-prefix: 【lala-boot本地环境邮件提醒】
+
+  upload:
+    max: 10000
+    partition: 500
+
+  error:
+    catch-print: true
+    service-print: true
+    run-time-print: true
+    mail:
+      open: false
+      level: 1
+      receivers:
+        - 329753704@qq.com
+        - 18771962347@163.com
+
+tenant:
+  # NONE-非租户模式,COLUMN_NAME-字段模式,TABLE_NAME-表名模式,DATA_SOURCE-数据源模式
+  mode: COLUMN_NAME
+  column-name: tenant_id
+  ignore-tables:
+    - ^common_*
+    - ^sys_*
+    - ^tables*
+    - ^columns*
+
+api:
+  doc: https://jerry-up-lala.apifox.cn
+  count: 172
