@@ -12,8 +12,10 @@
     <name>lala 基础框架</name>
 
     <modules>
-        <module>dependencies</module>
-        <module>core</module>
+        <module>framework-dependencies</module>
+        <module>framework-common</module>
+        <module>framework-boot</module>
+        <module>framework-cloud</module>
     </modules>
 
     <repositories>

@@ -1,0 +1,29 @@
+spring:
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.35.61:8848
+        username: nacos
+        password: nacos
+        group: LALA_CLOUD_GROUP
+          
+    sentinel:
+      log:
+        dir: /Users/jerry/root/root/data/lala/logs/core/csp
+      transport:
+        dashboard: 192.168.35.61:18080
+
+feign:
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
